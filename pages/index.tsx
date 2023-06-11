@@ -1,118 +1,240 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+// import authenticate from '@/utilities/authentication';
+import Image from 'next/image';
+import SaveIcon from '@/components/icons/save';
+import Link from 'next/link';
+import commonGetServerSidePropsFunc from '@/utilities/commonGetServerSideProps';
+import dbConnect from '@/lib/mongodb';
+import blog, { IBlogSchema } from '@/models/blog';
+import user from '@/models/user';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
-  return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+interface Ipageprops {
+    user: string,
+    profilePicUrl: string,
+    serializable_blogs: IBlogs[],
+    saved_blogs: string[],
+    user_id: string,
+    following: string[]
 }
+
+interface IBlogs extends Omit<IBlogSchema, '_doc' | 'posted_on' | 'coverImage' | 'owner'> {
+    id: string,
+    posted_on: string,
+    coverImage: string,
+    owner: {
+        id: string,
+        username: string,
+        profilePicture: string,
+        email: string
+    }
+}
+
+const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, following }: Ipageprops) => {
+    const [user_saved_blogs, setUserSavedBlogs] = useState(saved_blogs);
+    const [user_following, setUserFollowing] = useState(following)
+    const router = useRouter();
+
+    console.log('blogs...', user)
+    const arr = [1, 2]
+
+    const test = async () => {
+        const r = await fetch('/api/image/deleteImage', {
+            method: 'POST',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify({
+                keys: ['test1@domain.com/1685458291482Spotify — Niya Watkins.png', 'test1@domain.com/1685494585398Spotify — Niya Watkins.png']
+            })
+        })
+        console.log(r)
+    }
+
+    const postTest = async () => {
+        const resu = await fetch('/api/blog/test', {
+            method: 'POST',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify({
+                name: 'test3'
+            })
+        })
+        const d = await resu.json();
+        console.log(d.doc.date.toString())
+    }
+
+    const putTest = async () => {
+        await fetch('/api/blog/test', {
+            method: 'PUT',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify({
+                name: 'inayath'
+            })
+        })
+    }
+
+    const getTest = async () => {
+        await fetch('/api/blog/test', {
+            method: 'GET'
+        })
+    }
+
+    const save = async (blog_id: string) => {
+        if (!user) {
+            return router.push(`/user/login?callback=/`)
+        }
+
+        const if_saved = user_saved_blogs.find(v => v === blog_id) ? true : false
+        const res = await fetch(`/api/blog/${if_saved ? 'unsave' : 'save'}`, {
+            method: 'PUT',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify({
+                user_id,
+                blog_id
+            })
+        })
+
+        if (res.status === 200) {
+            if (if_saved) {
+                const new_user_saved_blogs = user_saved_blogs.filter(v => v !== blog_id);
+                setUserSavedBlogs(new_user_saved_blogs);
+            }
+            else {
+                const new_user_saved_blogs = [...user_saved_blogs, blog_id];
+                setUserSavedBlogs(new_user_saved_blogs)
+            }
+        }
+    }
+
+    const follow = async (id: string) => {
+        if (!user) {
+            return router.push(`/user/login?callback=/`)
+        }
+
+        // follow api
+        const res = await fetch(`/api/user/${user_following.find(v => v === id) ? 'unfollow' : 'follow'}`, {
+            method: 'PUT',
+            headers: new Headers({
+                'content-type': 'application/json'
+            }),
+            body: JSON.stringify({
+                user_id,
+                blogger_id: id
+            })
+        })
+        if (res.status === 200) {
+            if (user_following.find(v => v === id)) {
+                const new_user_following = user_following.filter(v => v !== id)
+                setUserFollowing(new_user_following)
+            }
+            else {
+                const new_user_following = [...user_following, id]
+                setUserFollowing(new_user_following)
+            }
+        }
+    }
+
+    return (
+        <div className='pt-navbar bg-slate-200 h-full min-h-screen'>
+            <div className='flex flex-col justify-start items-center w-screen h-full py-8'>
+                {/* map func here */}
+
+                {serializable_blogs.map(b => (
+                    <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
+                        {/* image name and follow button */}
+                        <div className='flex flex-row justify-between mb-4'>
+                            <Link href={`userInfo/${b.owner.email}`}>
+                                <div className='flex flex-row justify-start items-center'>
+                                    <Image src="/Profile_Picture.svg" alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
+                                    <div>
+                                        <h4>{b.owner.username}</h4>
+                                        <div className='flex flex-row justify-between items-center'>
+                                            <h5>{b.owner.email}</h5>
+                                            <h5 className='ml-3'>{b.posted_on}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                            {user_id !== b.owner.id && <button onClick={() => follow(b.owner.id)} title={user_following.find(v => v === b.owner.id) ? 'following' : 'follow'} className='h-8 bg-search border-none p-2 rounded text-black cursor-pointer'>{user_following.find(v => v === b.owner.id) ? 'following' : 'follow'}</button>}
+                        </div>
+
+                        {/* title content and cover image */}
+                        <div className='w-full flex flex-row justify-start items-start mb-4'>
+                            {/* title and desc */}
+                            <div>
+                                <Link href={`/blog/${b.id}`}>
+                                    <h2 title={b.title} className='w-[600px] h-16 text-ellipsis-2'>{b.title}</h2>
+
+                                    <p className='w-[600px] text-ellipsis-4'>{b.content.replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, "")}</p>
+                                </Link>
+                            </div>
+
+                            {b.coverImage && <Link href={`/blog/${b.id}`}>
+                                <img src={b.coverImage} alt="" className='rounded-lg h-[135px] w-[255px] object-contain' />
+                            </Link>}
+                        </div>
+                        <SaveIcon onClick={() => save(b.id)} saved={user_saved_blogs.find(v => v === b.id) ? true : false} height='20px' width='20px' />
+                    </div>
+                ))}
+
+
+            </div>
+
+        </div>
+    );
+}
+
+
+export async function getServerSideProps({ req, res }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Ipageprops>> {
+    const { cookies, current_user, profilePicUrl } = await commonGetServerSidePropsFunc({ req })
+
+    if (cookies.length > 0) {
+        res.setHeader('Set-Cookie', [...cookies])
+    }
+
+    await dbConnect();
+
+    let saved_blogs: string[] = []
+    let user_id = ''
+    let following: string[] = []
+    if (current_user) {
+        const userDetails = await user.findOne({ email: current_user })
+        if (userDetails) {
+            saved_blogs = userDetails.saved_blogs
+            user_id = userDetails._id.toString()
+            following = userDetails.following
+        }
+    }
+
+    const blogs = await blog.find({}).populate({ path: 'owner', select: ['username', '_id', 'profilePicture', 'email'] })
+    const serializable_blogs: IBlogs[] = []
+    blogs.forEach(v => {
+        serializable_blogs.push({
+            owner: {
+                id: v.owner._id.toString(),
+                username: v.owner.username,
+                profilePicture: v.owner.profilePicture?.url || '',
+                email: v.owner.email
+
+            },
+            title: v.title,
+            content: v.content,
+            posted_on: v.posted_on.toDateString().slice(4),
+            coverImage: v.coverImage?.url || '',
+            id: v._id.toString()
+        })
+    })
+
+    return {
+        props: { user: current_user, profilePicUrl, serializable_blogs, saved_blogs, user_id, following }
+    }
+}
+
+export default Blog;

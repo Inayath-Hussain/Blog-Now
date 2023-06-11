@@ -9,17 +9,32 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-clipboard": "^38.0.1",
+    "@ckeditor/ckeditor5-react": "^6.0.0",
     "@types/node": "18.15.13",
     "@types/react": "18.0.38",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
+    "aws-sdk": "^2.1373.0",
+    "bcrypt": "^5.1.0",
+    "ckeditor5-custom-build": "file:ckeditor5",
+    "cookie": "^0.5.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.1",
+    "formidable": "^2.1.1",
+    "jose": "^4.14.1",
+    "mongoose": "^7.0.4",
     "next": "13.3.1",
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^9.1.3",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cookie": "^0.5.1",
+    "@types/formidable": "^2.0.5"
   }
 }

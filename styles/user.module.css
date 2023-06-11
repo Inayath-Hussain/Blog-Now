@@ -1,0 +1,135 @@
+.h2 {
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.img {
+    height: 300px;
+    width: 300px;
+    margin-bottom: 25px;
+    margin-top: 15px;
+    object-fit: contain;
+}
+
+.link_container {
+    text-align: end;
+    margin-bottom: 0.75rem
+}
+
+.link_container>a {
+    text-align: end;
+    /* margin-bottom: 0.75rem; */
+    font-weight: 500;
+}
+
+.link_container>a:hover {
+    color: #1e98c9;
+}
+
+.main_margin {
+    margin-top: 80px;
+}
+
+.register_flex {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    /* justify-content: center;
+    align-items: center; */
+}
+
+.register_container {
+    height: auto;
+    width: 400px;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border-radius: 30px;
+    border: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 60px rgb(0, 0, 0, 0.5);
+}
+
+.register_container>label {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    text-align: left;
+}
+
+.register_container>input {
+    margin-bottom: 8px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #bbb;
+    border-radius: 0.5rem;
+    /* outline: 1px solid #000; */
+    font-size: 1rem;
+}
+
+.register_container>button,
+.submit {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+/* .register-container>span>a {
+    text-align: end;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .register-container>span>a:hover {
+    color: #1e98c9;
+  } */
+
+.register_error_container {
+    border-radius: 0.3rem;
+    font-weight: 500;
+    background-color: #c94b4b;
+    margin-bottom: 1.5rem;
+}
+
+.register_error {
+    padding: 0.5rem 1rem;
+    color: #fff;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+    text-align: left;
+}
+
+.submit {
+    background-color: #1e98c9;
+    /* font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem; */
+}
+
+.submit:hover {
+    color: #fff;
+}
+
+.skip_now {
+    cursor: pointer;
+    color: #a1a5a6;
+    border: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
