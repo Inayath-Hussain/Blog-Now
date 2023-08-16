@@ -79,9 +79,9 @@ const Blog = ({ id, user, profilePicUrl, details, ownerDetails, saved, user_id }
     return (
         <>
             <div className="pt-navbar h-auto px-48">
-                <div className="fixed top-navbar right-4">
+                {user !== ownerDetails.email && <div className="fixed top-navbar right-4">
                     <button onClick={save} className="bg-primary-btn m-2 text-white p-2 rounded-md cursor-pointer">{blogSaved ? 'Unsave' : 'Save'}</button>
-                </div>
+                </div>}
 
                 <div className="mt-6 mb-10">
                     {details.coverImage.url && <div className="flex flex-row justify-center items-center w-full mb-7">
