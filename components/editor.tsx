@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import BalloonBuildEditor from 'ckeditor5-custom-build/build/ckeditor';
+import BalloonBuildEditor from '@/ckeditor5/build/ckeditor';
 import { useRouter } from "next/router";
 import viewToPlainText from "@ckeditor/ckeditor5-clipboard/src/utils/viewtoplaintext"
 
@@ -30,7 +30,7 @@ const Editor = (
         try {
             editorRef.current = {
                 CKEditor: require('@ckeditor/ckeditor5-react').CKEditor,
-                BalloonEditor: require('ckeditor5-custom-build/build/ckeditor')
+                BalloonEditor: require('ckeditor5/build/ckeditor')
             }
         } catch (ex) {
             console.log(ex)
@@ -82,8 +82,8 @@ const Editor = (
                     extraPlugins: [uploadPlugin],
                     removePlugins: ["MediaEmbedToolbar"],
                     placeholder: 'Content Here',
-
                 }}
+                // @ts-ignore
                 editor={BalloonBuildEditor}
                 data={value}
                 //this is used to add custom css to editor
