@@ -36,7 +36,7 @@ const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCoun
                 <div className="flex flex-row justify-between items-start">
                     <div className="flex flex-row justify-start items-start">
 
-                        <Image src={profilePicUrl || '/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3" />
+                        <Image src={profilePicUrl || '/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3 rounded-half object-cover" />
 
                         <div className="flex flex-col h-[160px] justify-start">
                             <h3 className="mt-7">{userInfo.username}</h3>

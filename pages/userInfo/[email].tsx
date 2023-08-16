@@ -4,6 +4,7 @@ import dbConnect from "@/lib/mongodb";
 import blog, { IBlogSchema } from "@/models/blog";
 import user, { IUserSchema } from "@/models/user";
 import commonGetServerSidePropsFunc from "@/utilities/commonGetServerSideProps";
+import { convertToPlainText } from "@/utilities/convertToPlainText";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,7 +102,7 @@ const UserInfo = ({ user, profilePicUrl, email, blogs, profileDetails, following
                 {/*top  container */}
                 <div className="flex flex-row justify-between items-start">
                     <div className="flex flex-row justify-start items-start">
-                        <Image src={profileDetails.profilePicture?.url || '/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3" />
+                        <Image src={profileDetails.profilePicture?.url || '/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3 rounded-half object-cover" />
 
                         <div className="flex flex-col h-[160px] justify-start">
                             <h3 className="mt-7 cursor-default">{profileDetails.username}</h3>
@@ -164,7 +165,7 @@ const UserInfo = ({ user, profilePicUrl, email, blogs, profileDetails, following
                                 <h2 title={b.title} className='w-[600px] h-16 text-ellipsis-2'>{b.title}</h2>
 
                                 {/* func to replace all html tags and space tags => .replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, "") */}
-                                <p className='w-[600px] text-ellipsis-4'>{b.content.replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, "")}</p>
+                                <p className='w-[600px] text-ellipsis-4'>{convertToPlainText(b.content)}</p>
                             </Link>
                         </div>
 
