@@ -7,6 +7,7 @@ import blog from "@/models/blog";
 import user, { IUserSchema } from "@/models/user";
 import commonGetServerSidePropsFunc from "@/utilities/commonGetServerSideProps";
 import SaveIcon from "@/components/icons/save";
+import { calculateMinToRead } from "@/utilities/calcMinToRead";
 
 interface Ipageprops {
     id: string,
@@ -99,7 +100,7 @@ const Blog = ({ id, user, profilePicUrl, details, ownerDetails, saved, user_id }
                         <p>{details.posted_on}</p>
                         <span className="mx-3 pb-2 font-bold text-base">.</span>
                         <img className="mx-2" src="/book.svg" alt="" width={20} height={20} />
-                        <p>min read</p>
+                        <p>{calculateMinToRead(details.content)} min read</p>
                     </div>
 
                 </div>
