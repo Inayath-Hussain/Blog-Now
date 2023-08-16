@@ -12,17 +12,21 @@ import ImageIcon from "@/components/icons/image";
 import dbConnect from "@/lib/mongodb";
 import draft from "@/models/draft";
 import { IdraftsList } from "@/interfaces";
-import { IDraft } from "@/models/draft";
+import { IDraftSchema } from "@/models/draft";
 import PublishButton from "@/components/button/publish";
 import { headers } from "next/dist/client/components/headers";
 import user from "@/models/user";
+
+interface IDetails extends Omit<IDraftSchema, 'owner'> {
+    owner: string
+}
 
 interface Ipageprops {
     user: string,
     profilePicUrl: string,
     drafts: IdraftsList[],
     id: string,
-    details: IDraft,
+    details: IDetails,
     user_id: string
 }
 
@@ -167,10 +171,12 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
 
                     <div className="mt-6 mb-10">
                         <div className="flex flex-row justify-center items-center w-full mb-7">
-                            <img src="/Sample-png-image-500kb.png" alt="" width={1000} height={600} className="rounded-lg object-contain" />
+                            {/* cover image here */}
+                            {previewImg && <img src={previewImg} alt="" width={1000} height={600} className="rounded-lg object-contain" />}
                         </div>
-                        {/* title */}
-                        <h2 className="text-center">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid eligendi necessitatibus temporibus quod animi accusantium itaque voluptatem, quia molestias error optio enim tempore ratione ipsam id alias dolores eaque inventore?</h2>
+
+                        {/* title here */}
+                        <h2 className="text-center">{titleRef.current}</h2>
 
                         <div className="mt-9 flex flex-row w-full justify-center items-center">
                             <img src={'/Profile_Picture.svg'} alt="" width={48} height={48} className="rounded-half mr-2" />
@@ -291,7 +297,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
         props: {
             user: current_user, profilePicUrl, drafts, id, user_id: userDetails?._id.toString() as string,
             details: {
-                name, owner, content: content || '',
+                name, owner: owner._id.toString(), content: content || '',
                 coverImage: { key: coverImage?.key || '', url: coverImage?.url || '' }, title: title || ''
             }
         }
