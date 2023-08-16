@@ -78,15 +78,15 @@ const Blog = ({ id, user, profilePicUrl, details, ownerDetails, saved, user_id }
 
     return (
         <>
-            <div className="pt-navbar min-h-screen h-full px-48">
+            <div className="pt-navbar h-auto px-48">
                 <div className="fixed top-navbar right-4">
-                    <button onClick={save} className="bg-primary-btn m-2 text-white p-2 rounded-md cursor-pointer">{blogSaved ? 'Save' : 'Unsave'}</button>
+                    <button onClick={save} className="bg-primary-btn m-2 text-white p-2 rounded-md cursor-pointer">{blogSaved ? 'Unsave' : 'Save'}</button>
                 </div>
 
                 <div className="mt-6 mb-10">
-                    <div className="flex flex-row justify-center items-center w-full mb-7">
+                    {details.coverImage.url && <div className="flex flex-row justify-center items-center w-full mb-7">
                         <img src={details.coverImage.url} alt="" width={1000} height={600} className="rounded-lg object-contain" />
-                    </div>
+                    </div>}
                     {/* title */}
                     <h2 className="text-center">{details.title}</h2>
 
@@ -137,6 +137,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     let user_id = ''
     if (current_user) {
         const userDetails = await user.findOne({ email: current_user })
+        console.log('saved.....', userDetails?.saved_blogs)
         saved = userDetails?.saved_blogs.find(v => v === id) ? true : false
         user_id = userDetails?._id.toString() || ''
     }

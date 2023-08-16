@@ -1,16 +1,33 @@
 import SaveIcon from "@/components/icons/save";
 import authenticate from "@/utilities/authentication";
 import commonGetServerSidePropsFunc from "@/utilities/commonGetServerSideProps";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import user, { IUserSchema } from '@/models/user'
+import blog, { IBlogSchema } from "@/models/blog";
+import draft from "@/models/draft";
+import { convertToPlainText } from "@/utilities/convertToPlainText";
 
 interface Ipageprops {
     user: string,
     profilePicUrl: string
+    draftCount: number
+    serializable_blogs: IBlogs[]
+    userInfo: IUserInfo
 }
 
-const UserInfo = (props: Ipageprops) => {
+interface IUserInfo extends Omit<IUserSchema, '_doc' | 'password' | 'following' | 'saved_blogs' | 'profilePicture' | 'joined_on'> {
+    joined_on: string,
+}
+
+interface IBlogs extends Omit<IBlogSchema, '_doc' | 'posted_on' | 'coverImage' | 'owner'> {
+    id: string,
+    posted_on: string,
+    coverImage: string,
+}
+
+const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCount }: Ipageprops) => {
     return (
         <div className="pt-navbar flex flex-col justify-start items-center h-full min-h-screen">
 
@@ -19,11 +36,11 @@ const UserInfo = (props: Ipageprops) => {
                 <div className="flex flex-row justify-between items-start">
                     <div className="flex flex-row justify-start items-start">
 
-                        <Image src={'/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3" />
+                        <Image src={profilePicUrl || '/Profile_Picture.svg'} alt="Profile Picture" height={160} width={160} className="mr-3" />
 
                         <div className="flex flex-col h-[160px] justify-start">
-                            <h3 className="mt-7">HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH</h3>
-                            <h4 className="mt-6">Email: {props.user}</h4>
+                            <h3 className="mt-7">{userInfo.username}</h3>
+                            <h4 className="mt-6">Email: {userInfo.email}</h4>
                         </div>
 
                     </div>
@@ -35,22 +52,22 @@ const UserInfo = (props: Ipageprops) => {
                 </div>
 
                 <div className="flex flex-row justify-around items-center">
-                    <a href="/post blog" target="_blank">
+                    <a href="/draft" target="_blank">
                         <div className="flex flex-row justify-center items-center">
                             <Image src='/link.svg' alt='' height={16} width={16} />
-                            <h5 className="ml-2">Drafts: 3</h5>
+                            <h5 className="ml-2">Drafts: {draftCount}</h5>
                         </div>
                     </a>
 
                     <div>
-                        <h5 className="cursor-pointer">Followers: 5</h5>
+                        <h5 className="cursor-default">Followers: {userInfo.followers}</h5>
 
 
                     </div>
 
                     <div className="flex flex-row justify-start items-center">
                         <Image src='/calender.svg' alt='' height={16} width={16} className="mr-2" />
-                        <p>Joined May, 2023</p>
+                        <p className="cursor-default font-medium"><span className="font-normal">Joined on</span> {userInfo.joined_on}</p>
                     </div>
 
                 </div>
@@ -63,18 +80,18 @@ const UserInfo = (props: Ipageprops) => {
             <h2 className="mb-4">Blogs</h2>
 
             {/* map fucntion */}
-            {[1, 2, 3, 4].map(i => (
+            {serializable_blogs.map(i => (
 
                 <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
                     {/* image name and follow button */}
                     <div className='flex flex-row justify-between mb-4'>
                         <div className='flex flex-row justify-start items-center'>
-                            <Image src="/Profile_Picture.svg" alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
+                            <Image src={profilePicUrl || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
                             <div>
-                                <h4>Name</h4>
+                                <h4>{userInfo.username}</h4>
                                 <div className='flex flex-row justify-between items-center'>
-                                    <h5>email@domain.com</h5>
-                                    <h5 className='ml-3'>23 May, 2023</h5>
+                                    <h5>{userInfo.email}</h5>
+                                    <h5 className='ml-3'>{i.posted_on}</h5>
 
                                 </div>
                             </div>
@@ -87,18 +104,17 @@ const UserInfo = (props: Ipageprops) => {
                     <div className='w-full flex flex-row justify-start items-start mb-4'>
                         {/* title and desc */}
                         <div>
-                            <Link href={'#'}>
-                                <h2 title='AWS Lambda Function: IAM User Password Expiry Notice | SES, Boto3 & Terraform' className='w-[600px] h-16 text-ellipsis-2'>AWS Lambda Function: IAM User Password Expiry Notice | SES, Boto3 & Terraform</h2>
+                            <Link href={`/blog/${i.id}`}>
+                                <h2 title={i.title} className='w-auto min-w-[600px] h-16 text-ellipsis-2'>{i.title}</h2>
 
-                                <p className='w-[600px] text-ellipsis-4'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore eos ipsam voluptatem deserunt ad minima ut aperiam ab dignissimos? Sed quod enim quam commodi officia! Minima debitis officiis ullam maxime?
-                                    Porro, sed obcaecati. Odit earum autem unde facilis soluta, nobis repellat nulla aut hic ea, vitae quos pariatur quae aliquam sit saepe maiores repudiandae totam impedit dolorum velit fuga laudantium.
-                                    Repudiandae doloribus officia, obcaecati, libero, culpa voluptate quibusdam ut quam eos distinctio ad in fugit ipsum! Eos ipsa obcaecati, modi eum ex totam tenetur iure sed molestiae dolorem architecto voluptates!</p>
+                                <p className='w-auto min-w-[600px] text-ellipsis-4'>{convertToPlainText(i.content)}</p>
                             </Link>
                         </div>
 
-                        <Link href={'#'}>
-                            <img src="/Sample-png-image-500kb.png" alt="" className='rounded-lg h-[135px] w-[255px] object-contain' />
-                        </Link>
+                        {i.coverImage &&
+                            <Link href={`/blog/${i.id}`}>
+                                <img src={i.coverImage} alt="" className='rounded-lg h-[135px] w-[255px] object-contain' />
+                            </Link>}
                     </div>
 
                 </div>
@@ -110,7 +126,7 @@ const UserInfo = (props: Ipageprops) => {
 export default UserInfo;
 
 
-export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSidePropsContext) => {
+export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Ipageprops>> => {
     const { cookies, current_user, profilePicUrl } = await commonGetServerSidePropsFunc({ req })
 
     if (cookies.length > 0) {
@@ -127,7 +143,44 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
         };
     }
 
+    const userData = await user.findOne({ email: current_user }).select({ password: 0 })
+    if (!userData) return {
+        redirect: {
+            permanent: false,
+            destination: `/user/login?callback=${resolvedUrl}`,
+        }
+    }
+
+
+    const draftCount = await draft.where({ owner: userData.id }).count()
+
+
+    const serializable_userInfo: IUserInfo = {
+        email: userData.email,
+        username: userData.username,
+        followers: userData.followers,
+        joined_on: userData.joined_on.toDateString().slice(4)
+    }
+    console.log('serializable_userInfo..........', serializable_userInfo)
+
+    const userBlogs = await blog.find({ owner: userData?._id })
+    const serializable_blogs: IBlogs[] = []
+
+    userBlogs.forEach(v => {
+        serializable_blogs.push({
+            title: v.title,
+            content: v.content,
+            posted_on: v.posted_on.toDateString().slice(4),
+            coverImage: v.coverImage?.url || '',
+            id: v._id.toString()
+        })
+    })
+
+    console.log('userData...', userData)
+    console.log('userBlogs...', userBlogs)
+    console.log('userInfo/me/ serializable_blogs...', serializable_blogs)
+
     return {
-        props: { user: current_user, profilePicUrl }
+        props: { user: current_user, profilePicUrl, serializable_blogs, draftCount, userInfo: serializable_userInfo }
     }
 }
