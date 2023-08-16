@@ -190,3 +190,11 @@ hr {
 .resize {
   resize: none;
 }
+
+.parent-btn:focus img {
+  border: 1px solid black;
+}
+
+.border:focus {
+  border: 1px solid black;
+}
