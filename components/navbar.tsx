@@ -10,7 +10,7 @@ interface Iprops {
 
 const NavBar = (props: Iprops) => {
     const router = useRouter();
-    const [search, setSearch] = useState('');
+    // const [search, setSearch] = useState('');
 
     if (router.pathname === '/user/login' || router.pathname === '/user/register') return null
 
@@ -43,10 +43,10 @@ const NavBar = (props: Iprops) => {
                         <img src="/github-mark-white.svg" alt="" className="h-7 w-7" />
                     </div>
                 </a>
-                <input type="text"
+                {/* <input type="text"
                     className={`border-none outline-0 rounded-2xl bg-white py-1 pl-6 pr-4 bg-search-url bg-no-repeat bg-left
                      mr-1 text-base ${search ? 'w-52' : 'w-0 transition-all duration-5s ease focus:w-52'}`} value={search} onChange={e => setSearch(e.target.value)} />
-                <button className='p-1 border-none outline-none rounded bg-search cursor-pointer'>Search</button>
+                <button className='p-1 border-none outline-none rounded bg-search cursor-pointer'>Search</button> */}
             </div>
 
             {!router.pathname.includes('/draft') &&
