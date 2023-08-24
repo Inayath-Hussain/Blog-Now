@@ -11,7 +11,9 @@ const VerificationCard = ({ email, register }: Iprops) => {
 
     const [disabled, setDisabled] = useState(true);
     // @ts-ignore
-    const inputRefs = Array.from({ length: 4 }, () => useRef<null | HTMLInputElement>(null))
+    const inputRefs = [useRef<null | HTMLInputElement>(null), useRef<null | HTMLInputElement>(null),
+    useRef<null | HTMLInputElement>(null), useRef<null | HTMLInputElement>(null)]
+    // Array.from({ length: 4 }, () => useRef<null | HTMLInputElement>(null))
 
     // user entered code
     const getCode = () => {
