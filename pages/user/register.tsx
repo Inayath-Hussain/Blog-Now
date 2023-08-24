@@ -30,6 +30,12 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     const router = useRouter();
 
     // use this for register here
+    const sendVerificationCode = async () => {
+        if (password.length < 8) return setErrorMsg('Password should be atleast 8 characters long')
+
+        await sendMail({ to: email, username, setErrorMsg, setShowVerification })
+
+    }
     // const sendMail = async () => {
     //     console.log('verify mf.')
 
@@ -158,7 +164,7 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
                         </span>
 
                         <button style={username && email && password ? undefined : { cursor: 'not-allowed' }}
-                            onClick={() => sendMail({ to: email, username, setErrorMsg, setShowVerification })}
+                            onClick={sendVerificationCode}
                             disabled={username && email && password ? false : true}>Register</button>
                     </div>
             }
