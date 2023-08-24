@@ -37,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 if (process.env.AWS_BUCKET_NAME) {
 
-                    const key = fields.user + '/' + Date.now() + files.image.originalFilename
+                    const key = 'Profile Picture/' + fields.user + '/' + Date.now() + files.image.originalFilename
 
                     try {
                         const uploaded = await upload(key, files.image.filepath)
