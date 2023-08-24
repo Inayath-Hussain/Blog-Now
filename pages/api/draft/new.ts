@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const r = await draft.save()
             if (r) {
                 const draft_images = new images({
-                    draft_id: r._id
+                    draft_id: r._id.toString()
                 })
                 const i = await draft_images.save()
                 i._id.toString()
