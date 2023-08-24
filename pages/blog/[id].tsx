@@ -121,7 +121,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     const id = params?.id as string
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
+
         res.setHeader('Set-Cookie', [...cookies])
     }
 
@@ -130,7 +130,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     // const d = await draft.find({ owner: current_user })
     const details = await blog.findById(id).populate({ path: 'owner', select: ['username', 'profilePicture', 'saved_blogs', 'email'] })
     // const test = await blog.findById(id).populate({ path: 'owner', select: ['username', 'profilePicture', 'saved_blogs'] })
-    console.log('Test...........................................', details?.owner._id)
+
 
     // const ownerDetails = { username: '', profilePicture: { url: '' } }
 
@@ -138,7 +138,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     let user_id = ''
     if (current_user) {
         const userDetails = await user.findOne({ email: current_user })
-        console.log('saved.....', userDetails?.saved_blogs)
+
         saved = userDetails?.saved_blogs.find(v => v === id) ? true : false
         user_id = userDetails?._id.toString() || ''
     }
@@ -159,7 +159,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     const { title, coverImage, content } = details
     const { username, profilePicture, email } = details.owner
     const posted_on = details.posted_on.toDateString().slice(4)
-    console.log('details...', details)
+
 
     return {
         props: {

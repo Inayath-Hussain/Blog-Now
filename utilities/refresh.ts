@@ -13,7 +13,7 @@ export default async function refresh(refresh_token: string) {
             const user = payload.email
 
             try {
-                console.log(access_secret)
+
                 const new_access_token = await new SignJWT({
                     email: user
                 }).setIssuedAt().setExpirationTime('1min').setProtectedHeader({ alg: 'HS256' }).sign(new TextEncoder().encode(access_secret))
@@ -21,7 +21,7 @@ export default async function refresh(refresh_token: string) {
 
                 if (issuedAt.getDate() !== new Date().getDate()) {
                     try {
-                        console.log(refresh_secret)
+
                         const new_refresh_token = await new SignJWT({ email: user }).setIssuedAt().setExpirationTime('30d').setProtectedHeader({ alg: 'HS256' }).sign(new TextEncoder().encode(refresh_secret))
 
                         return { new_refresh_token, new_access_token, user }

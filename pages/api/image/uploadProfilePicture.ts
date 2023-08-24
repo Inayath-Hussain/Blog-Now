@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         const uploaded = await upload(key, files.image.filepath)
 
                         if (uploaded) {
-                            console.log(uploaded)
+
 
                             await dbConnect();
 

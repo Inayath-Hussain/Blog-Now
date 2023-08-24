@@ -21,43 +21,7 @@ interface Ipageprops {
 }
 
 const CreateDraft = ({ user, drafts, user_id }: Ipageprops) => {
-    // const [selectedDraft, setSelectedDraft] = useState(-1);
-    // const [search, setSearch] = useState('');
-    // const t = useRef<string>();
-    // const [editorLoaded, setEditorLoaded] = useState(false);
-    // const router = useRouter();
 
-    console.log(drafts)
-
-    // const getEditor = () => {
-    //     try {
-    //         return dynamic(() => import('@/components/editor'), { ssr: false })
-    //     } catch (ex) {
-    //         console.log(ex)
-    //         router.reload()
-    //     }
-    // }
-
-    // const Editor = getEditor()
-
-    // const example = '<h1 contentEditable>Hello</h1><input type="text"/>'
-
-    useEffect(() => {
-        // setEditorLoaded(true)
-        console.log('useeffect')
-    }, [])
-
-    // const deleteImg = async () => {
-    //     const result = await fetch('/api/image/deleteImage', {
-    //         method: 'POST',
-    //         headers: new Headers({
-    //             'content-type': 'application/json'
-    //         }),
-    //         body: JSON.stringify({
-    //             key: 'test2@domain.com/1683715604894Spotify — Niya Watkins.png'
-    //         })
-    //     })
-    // }
 
     return (
         <>
@@ -80,12 +44,10 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
 
     const { cookies, current_user, profilePicUrl } = await commonGetServerSidePropsFunc({ req })
 
-    console.log('url...', resolvedUrl)
 
     // const { cookies, current_user } = await authenticate({ access_token, refresh_token })
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
         res.setHeader('Set-Cookie', [...cookies])
     }
 
@@ -104,7 +66,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
     const draft = await Draft.find({ owner: userDetails?._id.toString() })
     const drafts: IdraftsList[] = []
     draft.forEach(v => drafts.push({ name: v.name, id: v._id.toString() }))
-    console.log('server side draft', drafts)
+
 
     return {
         props: { user: current_user, profilePicUrl, drafts, user_id: userDetails?._id.toString() as string }

@@ -39,7 +39,7 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
 
         let local_disabled = false;
         inputRefs.forEach(ref => {
-            console.log(ref.current?.value)
+
             if (ref.current?.value === '') {
                 local_disabled = true
             }
@@ -66,7 +66,7 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
 
             // api call to change email in db
             const code = getCode()
-            console.log(code)
+
             const response = await fetch('/api/user/changeEmail', {
                 method: 'PUT',
                 headers: new Headers({
@@ -80,11 +80,11 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
             })
 
             const data = await response.json()
-            console.log(data)
+
             if (response.status === 200) {
                 return router.reload()
             }
-            else toast(data, { type: 'error' })
+            else toast(data.error, { type: 'error' })
         }
 
     }

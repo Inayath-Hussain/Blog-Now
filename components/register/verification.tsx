@@ -30,7 +30,7 @@ const VerificationCard = ({ email, register }: Iprops) => {
         let local_disabled = false;
 
         inputs.forEach(input => {
-            console.log(input.value)
+
             if (input.value === '') {
                 local_disabled = true
             }

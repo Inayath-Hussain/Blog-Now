@@ -24,7 +24,6 @@ const Editor = (
         disable }: CKeditorProps
 ) => {
     const router = useRouter()
-    console.log('draft_id...', draft_id)
     const editorRef = useRef<{ CKEditor: typeof CKEditor, BalloonEditor: typeof BalloonBuildEditor }>();
     useEffect(() => {
         try {

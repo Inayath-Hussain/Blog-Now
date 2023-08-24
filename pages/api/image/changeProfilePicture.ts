@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
                     await dbConnect();
 
-                    console.log(files.image !== undefined)
+
                     const key = (files.image !== undefined) ? 'Profile Picture/' + fields.user + '/' + Date.now() + files.image.originalFilename :
                         ''
 
@@ -41,10 +41,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                         if (!userDetails) return res.status(400).json({ error: 'no user found' })
 
                         // if key exists then removed first
-                        console.log('changeProfilePicture.....', userDetails.profilePicture)
+
                         if (userDetails.profilePicture?.key) {
                             const deleted = await deleteImgs([userDetails.profilePicture.key])
-                            console.log('deleted..........', deleted)
+
                         }
 
 
@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                             const uploaded = await upload(key, files.image.filepath)
 
                             if (uploaded) {
-                                console.log(uploaded)
+
 
                                 if (userDetails && userDetails.profilePicture) {
                                     userDetails.profilePicture.key = key
@@ -83,8 +83,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                             res.setHeader('Set-Cookie', [profilePicUrl_serialized])
                             resolve({ status: 200, message: 'success' })
                         }
-                        console.log('files...', files.image)
-                        console.log('fields...', fields)
+
 
 
 

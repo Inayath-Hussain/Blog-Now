@@ -38,7 +38,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
 
     const selectImg = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            console.log(e.target.files)
+
             setProfilePic(e.target.files[0])
             setPreview(URL.createObjectURL(e.target.files[0]))
         }
@@ -59,6 +59,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
 
         const data = await result.json()
         console.log(data)
+        toast(data.error, { type: 'error' })
     }
 
 
@@ -90,7 +91,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
         else {
             const data = await response.json()
             console.log(data)
-            return toast(data, { type: 'error' })
+            return toast(data.error, { type: 'error' })
         }
     }
 
@@ -121,7 +122,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
         const data = await response.json()
         console.log(data)
         if (response.status === 200) return router.reload()
-        else return // error toast
+        else return toast(data.error, { type: 'error' })
 
     }
 
@@ -136,6 +137,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
         if (response.status === 200) return router.reload()
         const data = await response.json()
         console.log(data)
+        return toast(data.error, { type: 'error' })
     }
 
     return (
@@ -209,7 +211,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
     const { cookies, current_user, profilePicUrl } = await commonGetServerSidePropsFunc({ req })
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
+
         res.setHeader('Set-Cookie', [...cookies])
     }
 
@@ -238,9 +240,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
         followers: userData.followers,
         joined_on: userData.joined_on.toDateString().slice(4)
     }
-    console.log('serializable_userInfo..........', serializable_userInfo)
 
-    console.log('userData...', userData)
 
     return {
         props: { user: current_user, profilePicUrl, userInfo: serializable_userInfo }

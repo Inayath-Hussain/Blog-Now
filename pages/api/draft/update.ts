@@ -28,9 +28,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                 }
                 const { draft_id, owner, title, content, coverImage } = fields
                 if (coverImage === '') {
-                    console.log('fields.....', draft_id, owner, coverImage)
+
                 }
-                console.log('files......', Object.keys(files).length)
+
 
                 await dbConnect();
 

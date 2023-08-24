@@ -8,7 +8,7 @@ const refresh_secret = process.env.REFRESH_TOKEN_SECRET
 export default async function verify(access_token: string) {
     try {
         const { payload }: { payload: Ipayload } = await jwtVerify(access_token, new TextEncoder().encode(access_secret))
-        console.log(payload)
+
 
         if (payload?.email) {
             return { user: payload.email }

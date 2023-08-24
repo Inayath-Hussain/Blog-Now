@@ -26,9 +26,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             const codeDoc = await verificationCode.findOne({ email })
             if (!codeDoc) return res.status(400).json({ error: 'code expired' })
 
-            console.log(code)
+
             const validate = compareSync(code, codeDoc.code)
-            console.log(validate)
+
             if (!validate) return res.status(400).json({ error: 'Invalid Code' })
 
             await codeDoc.deleteOne()
@@ -46,7 +46,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
             user.password = await hash(user.password, salt);
 
             try {
-                console.log(user)
+
                 const r = await user.save()
 
                 if (r) {

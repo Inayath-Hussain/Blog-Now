@@ -30,7 +30,7 @@ const Login = ({ callbackURL }: pageProps): JSX.Element => {
             })
         })
 
-        console.log(result)
+
         setIsLoading(true)
         const data = await result.json();
         console.log(data)
@@ -83,14 +83,14 @@ export default Login;
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const callbackURL = context.query.callback || '/';
-    console.log(callbackURL)
+
     const access_token = context.req.cookies['AccessToken'];
     const refresh_token = context.req.cookies['RefreshToken'];
 
     const { cookies, current_user } = await authenticate({ access_token, refresh_token })
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
+
         context.res.setHeader('Set-Cookie', [...cookies])
     }
 

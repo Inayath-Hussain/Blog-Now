@@ -62,7 +62,7 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     const register = async (code: string) => {
         if (code.length !== 4) return console.log(code)
         setErrorMsg('');
-        console.log('submit')
+
         const result = await fetch('/api/auth/register', {
             method: 'POST',
             headers: new Headers({
@@ -89,7 +89,7 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
 
     const selectImg = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            console.log(e.target.files)
+
             setProfilePic(e.target.files[0])
             setPreview(URL.createObjectURL(e.target.files[0]))
         }
@@ -116,7 +116,7 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
             }
 
             router.push(callbackURL)
-            console.log(data)
+
 
 
             // upload photo and then redirect - API call where uploads to s3 and then
@@ -125,7 +125,7 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     }
 
     const skip = async () => {
-        console.log('skip')
+
         router.push(callbackURL)
     }
 
@@ -197,7 +197,7 @@ export const getServerSideProps = async ({ req, res, query }: GetServerSideProps
     const { cookies, current_user } = await authenticate({ access_token, refresh_token })
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
+
         res.setHeader('Set-Cookie', [...cookies])
     }
 

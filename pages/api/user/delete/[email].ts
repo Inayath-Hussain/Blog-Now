@@ -11,7 +11,7 @@ const handler: NextApiHandler = async (req, res) => {
     if (req.method === 'DELETE') {
         const { email } = req.query;
         if (!email) return res.status(400).json({ error: 'email is missing' })
-        console.log(email);
+
 
         await dbConnect();
 

@@ -32,7 +32,7 @@ interface Ipageprops {
 
 const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
 
-    console.log(id)
+
     const [coverImg, setCoverImg] = useState<File | null>()
     const [previewImg, setPreviewImg] = useState(details.coverImage?.url || '')
     const coverImgRef = useRef<HTMLInputElement>(null)
@@ -73,10 +73,9 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
     }, [])
 
     const selectImg = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log('select img')
+
         if (e.target.files && e.target.files.length > 0) {
-            console.log(e.target.files)
-            console.log(coverImg)
+
             setCoverImg(e.target.files[0])
             setPreviewImg(URL.createObjectURL(e.target.files[0]))
             savedRef.current = false
@@ -98,7 +97,7 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
         titleRef.current !== details.title && form.append('title', titleRef.current || '')
         contentRef.current !== details.content && form.append('content', contentRef.current || '')
         previewImg !== details.coverImage?.url && form.append('coverImage', coverImg || '')
-        console.log(previewImg !== details.coverImage?.url)
+
 
         return form;
     }
@@ -154,7 +153,7 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
             console.log(data.id)
             router.push(`/blog/${data.id}`)
         }
-        console.log('publish')
+
     }
 
     if (showPreview) {
@@ -248,7 +247,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     // const { cookies, current_user } = await authenticate({ access_token, refresh_token })
 
     if (cookies.length > 0) {
-        console.log('index...', [...cookies])
+
         res.setHeader('Set-Cookie', [...cookies])
     }
 
@@ -276,7 +275,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     const d = await draft.find({ owner: userDetails?._id })
     const drafts: IdraftsList[] = []
     d.forEach(v => drafts.push({ name: v.name, id: v._id.toString() }))
-    console.log('server side draft', drafts)
+
     let details = d.find(v => v._id.toString() === id)
 
     if (!details) {
@@ -291,7 +290,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl, params, query 
     delete details?.__v
     // delete details._id
     const { name, owner, title, coverImage, content } = details
-    console.log('details...', details)
+
 
     return {
         props: {

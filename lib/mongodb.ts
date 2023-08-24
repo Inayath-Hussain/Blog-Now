@@ -13,7 +13,7 @@ if (!cached) {
 }
 
 const dbConnect = async () => {
-    console.log('mongodb.js...', uri)
+
     if (cached.conn) {
         return cached.conn
     }
