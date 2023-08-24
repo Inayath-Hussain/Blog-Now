@@ -55,7 +55,7 @@ const Login = ({ callbackURL }: pageProps): JSX.Element => {
             <div className={styles.register_container}>
 
                 {errorMsg && <div className={styles.register_error_container}>
-                    <p className="register-error p-2">{errorMsg}</p>
+                    <p className="register-error text-white p-2">{errorMsg}</p>
                 </div>}
 
 
