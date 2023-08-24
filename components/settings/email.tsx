@@ -3,6 +3,7 @@ import SettingInput from "./input";
 import { IUserSchema } from "@/models/user";
 import { useRouter } from "next/router";
 import { sendMail } from "@/utilities/sendMail";
+import { toast } from "react-toastify";
 
 interface IUserInfo extends Omit<IUserSchema, '_doc' | 'password' | 'following' | 'saved_blogs' | 'profilePicture' | 'joined_on'> {
     joined_on: string,
@@ -35,7 +36,6 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
         inputRefs.every(ref => {
             ref.current?.value
         })
-        // const inputs = document.querySelectorAll('input')
 
         let local_disabled = false;
         inputRefs.forEach(ref => {
@@ -45,12 +45,6 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
             }
         })
 
-        // inputs.forEach(input => {
-        //     console.log(input.value)
-        //     if (input.value === '') {
-        //         local_disabled = true
-        //     }
-        // })
 
         setDisabled(local_disabled)
     }
@@ -88,8 +82,9 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
             const data = await response.json()
             console.log(data)
             if (response.status === 200) {
-                router.reload()
+                return router.reload()
             }
+            else toast(data, { type: 'error' })
         }
 
     }

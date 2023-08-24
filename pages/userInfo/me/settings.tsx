@@ -7,6 +7,7 @@ import SettingInput from "@/components/settings/input";
 import SettingsProfilePic from "@/components/settings/profilePic";
 import SettingsEmail from "@/components/settings/email";
 import dbConnect from "@/lib/mongodb";
+import { toast } from "react-toastify";
 
 interface Ipageprops {
     user: string,
@@ -89,7 +90,7 @@ const EditUserInfo: React.FC<Ipageprops> = ({ user, userInfo, profilePicUrl }) =
         else {
             const data = await response.json()
             console.log(data)
-            return //toast
+            return toast(data, { type: 'error' })
         }
     }
 
