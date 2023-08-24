@@ -110,6 +110,10 @@ a {
   border: 1px solid #b2b2b2;
 }
 
+.border:focus {
+  border: 1px solid black;
+}
+
 hr {
   background-color: var(--text) !important;
   height: 1px !important;

@@ -6,6 +6,7 @@ import authenticate from "@/utilities/authentication";
 import styles from '@/styles/user.module.css';
 import Image from "next/image";
 import commonGetServerSidePropsFunc from "@/utilities/commonGetServerSideProps";
+import { sendMail } from '@/utilities/sendMail'
 import { jwtVerify } from "jose";
 import ProfilePictureCard from "@/components/register/profilePic";
 import VerificationCard from "@/components/register/verification";
@@ -26,30 +27,30 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     const [errorMsg, setErrorMsg] = useState('');
     const [showVerification, setShowVerification] = useState(false);
     const [registered, setRegistered] = useState(new_user || false);
-    const router = useRouter()
+    const router = useRouter();
 
     // use this for register here
-    const sendMail = async () => {
-        console.log('verify mf.')
+    // const sendMail = async () => {
+    //     console.log('verify mf.')
 
-        const result = await fetch('/api/auth/sendCode', {
-            method: 'POST',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify({ to: email, username })
-        })
-        const data = await result.json()
+    //     const result = await fetch('/api/auth/sendCode', {
+    //         method: 'POST',
+    //         headers: new Headers({
+    //             'content-type': 'application/json'
+    //         }),
+    //         body: JSON.stringify({ to: email, username })
+    //     })
+    //     const data = await result.json()
 
-        console.log('result...', result)
-        console.log('data....', data)
+    //     console.log('result...', result)
+    //     console.log('data....', data)
 
-        if (data.error) {
-            setErrorMsg(data.error)
-            return
-        }
-        setShowVerification(true)
-    }
+    //     if (data.error) {
+    //         setErrorMsg(data.error)
+    //         return
+    //     }
+    //     setShowVerification(true)
+    // }
 
     // pass this to verificationCard component
     const register = async (code: string) => {
@@ -157,7 +158,8 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
                         </span>
 
                         <button style={username && email && password ? undefined : { cursor: 'not-allowed' }}
-                            onClick={sendMail} disabled={username && email && password ? false : true}>Register</button>
+                            onClick={() => sendMail({ to: email, username, setErrorMsg, setShowVerification })}
+                            disabled={username && email && password ? false : true}>Register</button>
                     </div>
             }
         </div>

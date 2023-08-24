@@ -8,6 +8,7 @@ import user, { IUserSchema } from '@/models/user'
 import blog, { IBlogSchema } from "@/models/blog";
 import draft from "@/models/draft";
 import { convertToPlainText } from "@/utilities/convertToPlainText";
+import dbConnect from "@/lib/mongodb";
 
 interface Ipageprops {
     user: string,
@@ -31,8 +32,8 @@ const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCoun
     return (
         <div className="pt-navbar flex flex-col justify-start items-center h-full min-h-screen">
 
+            {/* top  container */}
             <div className="mb-8 shadow-info-card-all-sides border border-solid w-[1000px] h-72 rounded-xl flex flex-col justify-between items-stretch my-8 p-4">
-                {/*top  container */}
                 <div className="flex flex-row justify-between items-start">
                     <div className="flex flex-row justify-start items-start">
 
@@ -46,8 +47,11 @@ const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCoun
                     </div>
 
                     <button className="p-3 rounded-lg flex flex-row justify-center items-center h-8 border-none bg-secondary-btn text-base cursor-pointer">
-                        <Image src='/edit.svg' alt="" height={16} width={16} className="mr-2" />
-                        Edit</button>
+                        <Link href="me/settings" className="flex flex-row justify-center items-center">
+                            <Image src='/settings.svg' alt="" height={16} width={16} className="mr-2" />
+                            Settings
+                        </Link>
+                    </button>
 
                 </div>
 
@@ -79,14 +83,14 @@ const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCoun
 
             <h2 className="mb-4">Blogs</h2>
 
-            {/* map fucntion */}
+            {/* blogs */}
             {serializable_blogs.map(i => (
 
                 <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
                     {/* image name and follow button */}
                     <div className='flex flex-row justify-between mb-4'>
                         <div className='flex flex-row justify-start items-center'>
-                            <Image src={profilePicUrl || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
+                            <img src={profilePicUrl || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
                             <div>
                                 <h4>{userInfo.username}</h4>
                                 <div className='flex flex-row justify-between items-center'>
@@ -143,6 +147,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
         };
     }
 
+    await dbConnect();
     const userData = await user.findOne({ email: current_user }).select({ password: 0 })
     if (!userData) return {
         redirect: {

@@ -234,6 +234,8 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
         })
     })
 
+    console.log(profilePicUrl)
+
     return {
         props: { user: current_user, profilePicUrl, serializable_blogs, saved_blogs, user_id, following }
     }

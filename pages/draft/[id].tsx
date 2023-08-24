@@ -202,7 +202,7 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
             <ToastContainer position="bottom-right" />
             <DraftSideBar id={id} drafts={drafts} user={user} />
 
-            <div className="fixed top-navbar right-4">
+            <div className="fixed top-navbar right-4 z-[100]">
                 <button onClick={() => setShowPreview(true)} className="bg-primary-btn m-2 text-white p-2 rounded-md cursor-pointer">Preview</button>
 
                 <button onClick={publish} className='bg-primary-btn m-2 text-white p-2 rounded-md cursor-pointer'>Publish</button>
