@@ -85,6 +85,7 @@ const VerificationCard = ({ email, register }: Iprops) => {
             <div className='flex flex-row gap-4 pt-6 pb-8 w-full justify-center items-center'>
                 {inputRefs.map((i, index) => (
                     <input type="text"
+                        key={index}
                         ref={i}
                         maxLength={1}
                         onKeyDown={(event) => handleKeyDown(index, event)}
