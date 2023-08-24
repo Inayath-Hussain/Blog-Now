@@ -37,53 +37,6 @@ const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, f
     const [user_following, setUserFollowing] = useState(following)
     const router = useRouter();
 
-    console.log('blogs...', user)
-    const arr = [1, 2]
-
-    const test = async () => {
-        const r = await fetch('/api/image/deleteImage', {
-            method: 'POST',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify({
-                keys: ['test1@domain.com/1685458291482Spotify — Niya Watkins.png', 'test1@domain.com/1685494585398Spotify — Niya Watkins.png']
-            })
-        })
-        console.log(r)
-    }
-
-    const postTest = async () => {
-        const resu = await fetch('/api/blog/test', {
-            method: 'POST',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify({
-                name: 'test3'
-            })
-        })
-        const d = await resu.json();
-        console.log(d.doc.date.toString())
-    }
-
-    const putTest = async () => {
-        await fetch('/api/blog/test', {
-            method: 'PUT',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify({
-                name: 'inayath'
-            })
-        })
-    }
-
-    const getTest = async () => {
-        await fetch('/api/blog/test', {
-            method: 'GET'
-        })
-    }
 
     const save = async (blog_id: string) => {
         if (!user) {

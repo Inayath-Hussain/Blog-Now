@@ -166,7 +166,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
         followers: userData.followers,
         joined_on: userData.joined_on.toDateString().slice(4)
     }
-    console.log('serializable_userInfo..........', serializable_userInfo)
+
 
     const userBlogs = await blog.find({ owner: userData?._id })
     const serializable_blogs: IBlogs[] = []
@@ -181,9 +181,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }: GetServerSid
         })
     })
 
-    console.log('userData...', userData)
-    console.log('userBlogs...', userBlogs)
-    console.log('userInfo/me/ serializable_blogs...', serializable_blogs)
+
 
     return {
         props: { user: current_user, profilePicUrl, serializable_blogs, draftCount, userInfo: serializable_userInfo }

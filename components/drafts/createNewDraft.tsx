@@ -32,7 +32,7 @@ const CreateNewDraft = ({ close, owner, setDrafts }: IpageProps) => {
 
         // when focus is on last button of modal component, the next focus will be shifted to first button
         const handleFocusDirection = (e: KeyboardEvent) => {
-            console.log(e.key)
+
             if (e.key === 'Tab' && !e.shiftKey) {
                 e.preventDefault()
                 firstElement.focus()
@@ -89,7 +89,7 @@ const CreateNewDraft = ({ close, owner, setDrafts }: IpageProps) => {
         })
 
         if (result) {
-            console.log(result)
+
             const data = await result.json()
             setDrafts(value => { value.push({ id: data.id, name }); return value })
             close()

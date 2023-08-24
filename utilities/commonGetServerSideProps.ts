@@ -17,7 +17,7 @@ const commonGetServerSidePropsFunc = async ({ req }: Iparams) => {
     let new_user_cookie = ''
 
     if (new_user) {
-        console.log('new_user......', new_user)
+
         const cookie = delete_new_user_cookie()
         new_user_cookie = cookie
     }
