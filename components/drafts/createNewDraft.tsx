@@ -98,7 +98,7 @@ const CreateNewDraft = ({ close, owner, setDrafts }: IpageProps) => {
 
     return (
 
-        <div role="dialog" onClick={close} className="fixed inset-0 bg-black bg-opacity-50 bg- backdrop-blur-xl z-20 flex flex-row pt-navbar justify-center items-center">
+        <div role="dialog" onClick={close} style={{ backdropFilter: 'blur(5px)' }} className="fixed inset-0 bg-black bg-opacity-70 z-[200] flex flex-row pt-navbar justify-center items-center">
             <div onClick={(e) => e.stopPropagation()} className="relative mt-5 flex flex-col justify-around items-center bg-white rounded-lg p-2 h-1/3 w-1/4 z-20">
 
                 <h3>Enter Draft Name</h3>
@@ -106,7 +106,7 @@ const CreateNewDraft = ({ close, owner, setDrafts }: IpageProps) => {
                     <img className="rounded-[50%]" src="/close.svg" alt="" />
                 </button>
 
-                <input type="text" placeholder="Draft Name" value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl w-3/4 p-2 text-lg" />
+                <input type="text" placeholder="Draft Name" value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl w-3/4 p-2 text-lg border" />
                 <button className={`px-4 rounded-2xl p-2 mt-3 text-xl cursor-pointer border 
                 ${name === '' ? 'cursor-not-allowed' : 'hover:bg-yellow-300 cursor-default'}
                       border-gray-400 outline-0 bg-primary-btn`} disabled={name === '' ? true : false}
