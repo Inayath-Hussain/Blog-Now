@@ -9,6 +9,7 @@ import blog, { IBlogSchema } from '@/models/blog';
 import user from '@/models/user';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { convertToPlainText } from '@/utilities/convertToPlainText';
 
 interface Ipageprops {
     user: string,
@@ -147,7 +148,7 @@ const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, f
                 {/* map func here */}
 
                 {serializable_blogs.map(b => (
-                    <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
+                    <div key={b.id} className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
                         {/* image name and follow button */}
                         <div className='flex flex-row justify-between mb-4'>
                             <Link href={`userInfo/${b.owner.email}`}>
@@ -170,9 +171,9 @@ const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, f
                             {/* title and desc */}
                             <div>
                                 <Link href={`/blog/${b.id}`}>
-                                    <h2 title={b.title} className='w-[600px] h-16 text-ellipsis-2'>{b.title}</h2>
+                                    <h2 title={b.title} className='w-auto min-w-[600px] h-16 text-ellipsis-2'>{b.title}</h2>
 
-                                    <p className='w-[600px] text-ellipsis-4'>{b.content.replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, "")}</p>
+                                    <p className='w-auto min-w-[600px] text-ellipsis-4'>{convertToPlainText(b.content)}</p>
                                 </Link>
                             </div>
 
@@ -208,6 +209,7 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
         const userDetails = await user.findOne({ email: current_user })
         if (userDetails) {
             saved_blogs = userDetails.saved_blogs
+            console.log('saved....', saved_blogs)
             user_id = userDetails._id.toString()
             following = userDetails.following
         }
@@ -231,6 +233,8 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
             id: v._id.toString()
         })
     })
+
+    console.log(profilePicUrl)
 
     return {
         props: { user: current_user, profilePicUrl, serializable_blogs, saved_blogs, user_id, following }

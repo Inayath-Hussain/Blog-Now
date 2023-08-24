@@ -1,20 +1,13 @@
 import createModel from "@/utilities/createModel";
 import mongoose from "mongoose";
+import { IUserSchema } from "./user";
 
-// to use in the frontend
-export interface IDraft {
-    owner: string,
-    name: string,
-    coverImage?: {
-        key: string,
-        url: string
-    },
-    title?: string,
-    content?: string
+interface IuserRef extends IUserSchema {
+    _id: mongoose.ObjectId
 }
 
-interface IDraftSchema {
-    owner: string,
+export interface IDraftSchema {
+    owner: IuserRef,
     name: string,
     coverImage?: {
         key: string,
@@ -28,8 +21,8 @@ type IDraftModel = mongoose.Model<IDraftSchema, {}>
 
 const draftSchema = new mongoose.Schema<IDraftSchema, IDraftModel>({
     owner: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
     },
     name: {
         type: String,

@@ -47,7 +47,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                                 const images_to_remove = draft_images.images.filter(v => !(content.includes(v.url)))
                                 const keys: string[] = []
                                 images_to_remove.forEach(v => keys.push(v.key))
-                                const result = await deleteImgs(keys)
+                                if (keys.length > 0) {
+                                    const result = await deleteImgs(keys)
+                                }
 
                                 draft_images.images = draft_images.images.filter(v => !keys.includes(v.key))
                                 await draft_images.save()

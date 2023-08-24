@@ -5,6 +5,7 @@ import DraftIcon from "../icons/draft";
 import Link from "next/link";
 import CreateNewDraft from "./createNewDraft";
 import { IdraftsList } from "@/interfaces";
+import { createPortal } from "react-dom";
 
 interface IpageProps {
     id: string,
@@ -45,7 +46,7 @@ const DraftSideBar = ({ drafts, user, id }: IpageProps) => {
                     {/* <img src="/newDraft.svg" alt="" /> */}
                     New Draft</button>
             </div>
-            {openModal && <CreateNewDraft setDrafts={setDrafts} owner={user} close={() => setOpenModal(false)} />}
+            {openModal && createPortal(<CreateNewDraft setDrafts={setDrafts} owner={user} close={() => setOpenModal(false)} />, document.getElementById('modal') as Element)}
         </div>
     );
 }

@@ -1,8 +1,9 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { genSalt, hash } from 'bcrypt';
-import User from '@/models/user';
-import dbConnect from "@/lib/mongodb";
+import { genSalt, hash, compareSync } from 'bcrypt';
 import { SignJWT } from "jose";
+import dbConnect from "@/lib/mongodb";
+import User from '@/models/user';
+import verificationCode from "@/models/verificationCode";
 import { serialize_access, serialize_refresh, serialize_new_user, serialize_profilePicUrl } from "@/utilities/serialize";
 
 const access_secret = process.env.ACCESS_TOKEN_SECRET
@@ -11,7 +12,7 @@ const new_user_secret = process.env.NEW_USER_SECRET
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { method } = req;
-    const { username, email, password } = req.body;
+    const { username, email, password, code } = req.body;
     const profilePicture = {
         key: '',
         url: ''
@@ -21,11 +22,18 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
         case 'POST':
             await dbConnect();
 
-            let user = await User.findOne({ email })
+            // check if code is correct
+            const codeDoc = await verificationCode.findOne({ email })
+            if (!codeDoc) return res.status(400).json({ error: 'code expired' })
 
-            if (user) return res.status(400).json({ error: 'Email already exists' })
+            console.log(code)
+            const validate = compareSync(code, codeDoc.code)
+            console.log(validate)
+            if (!validate) return res.status(400).json({ error: 'Invalid Code' })
 
-            user = new User({
+            await codeDoc.deleteOne()
+
+            let user = new User({
                 username,
                 email,
                 password,

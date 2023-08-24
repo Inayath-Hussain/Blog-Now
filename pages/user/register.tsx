@@ -6,7 +6,10 @@ import authenticate from "@/utilities/authentication";
 import styles from '@/styles/user.module.css';
 import Image from "next/image";
 import commonGetServerSidePropsFunc from "@/utilities/commonGetServerSideProps";
+import { sendMail } from '@/utilities/sendMail'
 import { jwtVerify } from "jose";
+import ProfilePictureCard from "@/components/register/profilePic";
+import VerificationCard from "@/components/register/verification";
 
 interface IPageProps {
     callbackURL: string,
@@ -22,10 +25,42 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     const [profilePic, setProfilePic] = useState<File>();
     const [preview, setPreview] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
+    const [showVerification, setShowVerification] = useState(false);
     const [registered, setRegistered] = useState(new_user || false);
-    const router = useRouter()
+    const router = useRouter();
 
-    const register = async () => {
+    // use this for register here
+    const sendVerificationCode = async () => {
+        if (password.length < 8) return setErrorMsg('Password should be atleast 8 characters long')
+
+        await sendMail({ to: email, username, setErrorMsg, setShowVerification })
+
+    }
+    // const sendMail = async () => {
+    //     console.log('verify mf.')
+
+    //     const result = await fetch('/api/auth/sendCode', {
+    //         method: 'POST',
+    //         headers: new Headers({
+    //             'content-type': 'application/json'
+    //         }),
+    //         body: JSON.stringify({ to: email, username })
+    //     })
+    //     const data = await result.json()
+
+    //     console.log('result...', result)
+    //     console.log('data....', data)
+
+    //     if (data.error) {
+    //         setErrorMsg(data.error)
+    //         return
+    //     }
+    //     setShowVerification(true)
+    // }
+
+    // pass this to verificationCard component
+    const register = async (code: string) => {
+        if (code.length !== 4) return console.log(code)
         setErrorMsg('');
         console.log('submit')
         const result = await fetch('/api/auth/register', {
@@ -36,7 +71,8 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
             body: JSON.stringify({
                 username,
                 email,
-                password
+                password,
+                code
             })
         })
 
@@ -96,51 +132,41 @@ const Register = ({ callbackURL, new_user, current_user }: IPageProps): JSX.Elem
     return (
         <div className={styles.register_flex}>
             {registered ?
-                <div className={styles.register_container}>
-
-                    <h2 className={styles.h2}>Choose Profile Picture</h2>
-
-                    <Image src={preview ? preview : '/Profile_Picture.svg'} alt="" width='300' height='300' className={styles.img} />
-
-                    {/* <svg role="img" height="150" width="150" aria-hidden="true" viewBox="0 0 15 25" data-encore-id="icon"><path d="M6.233.371a4.388 4.388 0 0 1 5.002 1.052c.421.459.713.992.904 1.554.143.421.263 1.173.22 1.894-.078 1.322-.638 2.408-1.399 3.316l-.127.152a.75.75 0 0 0 .201 1.13l2.209 1.275a4.75 4.75 0 0 1 2.375 4.114V16H.382v-1.143a4.75 4.75 0 0 1 2.375-4.113l2.209-1.275a.75.75 0 0 0 .201-1.13l-.126-.152c-.761-.908-1.322-1.994-1.4-3.316-.043-.721.077-1.473.22-1.894a4.346 4.346 0 0 1 .904-1.554c.411-.448.91-.807 1.468-1.052zM8 1.5a2.888 2.888 0 0 0-2.13.937 2.85 2.85 0 0 0-.588 1.022c-.077.226-.175.783-.143 1.323.054.921.44 1.712 1.051 2.442l.002.001.127.153a2.25 2.25 0 0 1-.603 3.39l-2.209 1.275A3.25 3.25 0 0 0 1.902 14.5h12.196a3.25 3.25 0 0 0-1.605-2.457l-2.209-1.275a2.25 2.25 0 0 1-.603-3.39l.127-.153.002-.001c.612-.73.997-1.52 1.052-2.442.032-.54-.067-1.097-.144-1.323a2.85 2.85 0 0 0-.588-1.022A2.888 2.888 0 0 0 8 1.5z"></path></svg> */}
-
-                    <input type="file" accept="image/*" onChange={(e) => selectImg(e)} />
-
-                    <div className={styles.flex}>
-                        <button onClick={submit} className={styles.submit}>Submit</button>
-                        <button onClick={skip} className={styles.skip_now}> Skip for now</button>
-                    </div>
-                </div>
-
+                <ProfilePictureCard preview={preview} selectImg={selectImg} skip={skip} submit={submit} />
                 :
 
-                <div className={styles.register_container}>
+                showVerification ?
+                    <VerificationCard email={email} register={register} />
 
-                    {errorMsg && <div className={styles.register_error_container}>
-                        <p className={styles.register_error}>{errorMsg}</p>
-                    </div>}
+                    :
+                    <div className={styles.register_container}>
 
-                    <label htmlFor="username">Username</label>
-                    <input maxLength={32} type="text" name='username' placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)} />
+                        {errorMsg && <div className={styles.register_error_container}>
+                            <p className={styles.register_error}>{errorMsg}</p>
+                        </div>}
 
-
-
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name='email' placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
+                        <label htmlFor="username">Username</label>
+                        <input maxLength={32} type="text" name='username' placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)} />
 
 
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {/* <p>Error</p> */}
 
-                    <span className={styles.link_container}>
-                        <Link href={`/user/login?callback=${callbackURL}`}>LogIn ?</Link>
-                    </span>
+                        <label htmlFor="email">Email</label>
+                        <input type="email" name='email' placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-                    <button style={username && email && password ? undefined : { cursor: 'not-allowed' }}
-                        onClick={register} disabled={username && email && password ? false : true}>Register</button>
-                </div>
+
+
+                        <label htmlFor="password">Password</label>
+                        <input type="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        {/* <p>Error</p> */}
+
+                        <span className={styles.link_container}>
+                            <Link href={`/user/login?callback=${callbackURL}`}>LogIn ?</Link>
+                        </span>
+
+                        <button style={username && email && password ? undefined : { cursor: 'not-allowed' }}
+                            onClick={sendVerificationCode}
+                            disabled={username && email && password ? false : true}>Register</button>
+                    </div>
             }
         </div>
     );
