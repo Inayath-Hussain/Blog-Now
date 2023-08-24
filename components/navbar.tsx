@@ -70,7 +70,7 @@ const NavBar = (props: Iprops) => {
                     {router.pathname !== '/userInfo/me' &&
                         <>
                             <Link href={'/userInfo/me'}>
-                                <img src={props.profilePicUrl || '/Profile_picture.svg'} alt="profile picture" height={40} width={40} className="mr-2 rounded-half object-cover" />
+                                <img src={props.profilePicUrl || '/Profile_Picture.svg'} alt="profile picture" height={40} width={40} className="mr-2 rounded-half object-cover" />
                             </Link>
                             <Link href={'/userInfo/me'}>
                                 <h5>{props.user}</h5>
