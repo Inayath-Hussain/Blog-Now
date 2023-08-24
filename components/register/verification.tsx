@@ -18,7 +18,7 @@ const VerificationCard = ({ email, register }: Iprops) => {
         inputRefs.forEach((ref) => {
             code = code + ref.current?.value
         })
-        return code
+        return code.toUpperCase()
     }
 
     const checkDisabled = () => {
@@ -74,20 +74,6 @@ const VerificationCard = ({ email, register }: Iprops) => {
 
     }
 
-    const send_mail = async () => {
-        console.log('verify mf.')
-        const result = await fetch('/api/auth/sendCode', {
-            method: 'POST',
-            headers: new Headers({
-                'content-type': 'application/json'
-            }),
-            body: JSON.stringify({ to: 'inayathh9@gmail.com', username: 'test3' })
-        })
-        const data = await result.json()
-
-        console.log('result...', result)
-        console.log('data....', data)
-    }
 
     return (
         <div className={`${styles.register_container} py-8`}>
