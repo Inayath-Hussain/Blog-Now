@@ -142,6 +142,7 @@ const SettingsEmail: React.FC<Iprops> = ({ userInfo, setErrorMsg }) => {
                     <div className='flex flex-row gap-2 pt-3 pb-3 w-full justify-center items-center'>
                         {inputRefs.map((i, index) => (
                             <input type="text"
+                                key={index}
                                 ref={i}
                                 maxLength={1}
                                 onKeyDown={(event) => handleKeyDown(index, event)}

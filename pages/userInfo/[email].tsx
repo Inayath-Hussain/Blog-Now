@@ -140,7 +140,7 @@ const UserInfo = ({ user, profilePicUrl, email, blogs, profileDetails, following
             {/* map fucntion */}
 
             {blogs.length > 0 && blogs.map(b => (
-                <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
+                <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white' key={b._id}>
                     {/* image name and follow button */}
                     <div className='flex flex-row justify-between mb-4'>
                         <div className='flex flex-row justify-start items-center'>

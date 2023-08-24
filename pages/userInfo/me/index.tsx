@@ -86,7 +86,7 @@ const UserInfo = ({ user, profilePicUrl, serializable_blogs, userInfo, draftCoun
             {/* blogs */}
             {serializable_blogs.map(i => (
 
-                <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white'>
+                <div className='mb-5 p-5 flex flex-col border border-solid rounded-lg w-[900px] h-72 bg-white' key={i.id}>
                     {/* image name and follow button */}
                     <div className='flex flex-row justify-between mb-4'>
                         <div className='flex flex-row justify-start items-center'>
