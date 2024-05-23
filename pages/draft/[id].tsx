@@ -229,7 +229,7 @@ const Draft = ({ user, drafts, id, details, user_id }: Ipageprops) => {
                 </div>
 
 
-                {Editor && <Editor disable={false} draft_id={id} name="Blog" user={user} editorLoaded={editorLoaded} onChange={(data, plainText) => { contentRef.current = data; savedRef.current = false; console.log(contentRef.current); }} value={contentRef.current || ''} />}
+                {Editor && <Editor disable={false} draft_id={id} name="Blog" user={user} editorLoaded={editorLoaded} onChange={(data, plainText) => { contentRef.current = data; savedRef.current = false; }} value={contentRef.current || ''} />}
             </div>
         </>
     );

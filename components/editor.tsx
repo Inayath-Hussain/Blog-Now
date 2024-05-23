@@ -53,7 +53,6 @@ const Editor = (
                         })
                             .then((res) => res.json())
                             .then((res) => {
-                                console.log('EDITOR.....', res)
                                 resolve({
                                     default: `${res}`
                                 });
@@ -115,9 +114,9 @@ const Editor = (
                     // const plainText = event.editor.editable().getText();
                     // \<.*?\>
                     // /(<([^>]+)>)/ig
-                    console.log(data);
+                    // console.log(data);
                     // console.log('plain text', data.replaceAll(/(<([^>]+)>)/ig, ''));
-                    console.log('plain text', data.replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, ""));
+                    // console.log('plain text', data.replaceAll(/(<([^>]+)>)/ig, '').replaceAll(/(&([^>]+);)/ig, ""));
                     onChange(data, '');
                 }}
             // config={{
