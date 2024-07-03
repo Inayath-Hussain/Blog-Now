@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 // import authenticate from '@/utilities/authentication';
-import Image from 'next/image';
+// import Image from 'next/image';
 import SaveIcon from '@/components/icons/save';
 import Link from 'next/link';
 import commonGetServerSidePropsFunc from '@/utilities/commonGetServerSideProps';
@@ -106,7 +106,7 @@ const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, f
                         <div className='flex flex-row justify-between mb-4'>
                             <Link href={`userInfo/${b.owner.email}`}>
                                 <div className='flex flex-row justify-start items-center'>
-                                    <Image src={b.owner.profilePicture || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
+                                    <img src={b.owner.profilePicture || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
                                     <div>
                                         <h4>{b.owner.username}</h4>
                                         <div className='flex flex-row justify-between items-center'>
