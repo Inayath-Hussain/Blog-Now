@@ -106,7 +106,7 @@ const Blog = ({ user, profilePicUrl, serializable_blogs, saved_blogs, user_id, f
                         <div className='flex flex-row justify-between mb-4'>
                             <Link href={`userInfo/${b.owner.email}`}>
                                 <div className='flex flex-row justify-start items-center'>
-                                    <Image src="/Profile_Picture.svg" alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
+                                    <Image src={b.owner.profilePicture || "/Profile_Picture.svg"} alt="profile picture" height={48} width={48} className='rounded-half mr-2' />
                                     <div>
                                         <h4>{b.owner.username}</h4>
                                         <div className='flex flex-row justify-between items-center'>
@@ -162,7 +162,6 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
         const userDetails = await user.findOne({ email: current_user })
         if (userDetails) {
             saved_blogs = userDetails.saved_blogs
-            console.log('saved....', saved_blogs)
             user_id = userDetails._id.toString()
             following = userDetails.following
         }
@@ -186,8 +185,6 @@ export async function getServerSideProps({ req, res }: GetServerSidePropsContext
             id: v._id.toString()
         })
     })
-
-    console.log(profilePicUrl)
 
     return {
         props: { user: current_user, profilePicUrl, serializable_blogs, saved_blogs, user_id, following }
